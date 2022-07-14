@@ -13,7 +13,7 @@ const CategoriesModel = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
     },
   }, {
-    timestamp: false,
+    timestamps: false,
   }
   );
   return Category;
