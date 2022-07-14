@@ -1,5 +1,3 @@
-// ./auth/validateJWT.js
-require('dotenv/config');
 const jwtService = require('../services/jwt.service');
 
 const validationToken = async (req, res, next) => {
