@@ -1,4 +1,3 @@
-// const loginService = require('../services/user.service');
 const jwtService = require('../services/jwt.service');
 
 const signIn = async (req, res) => {

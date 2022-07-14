@@ -29,7 +29,6 @@ const userModel = (sequelize, DataTypes) => {
     timestamps: false,
     // underscored: false,
   });
-  console.log('User 1', User);
   return User;
 }
 

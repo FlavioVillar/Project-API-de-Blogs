@@ -1,7 +1,7 @@
 const loginService = require('../services/user.service');
 const { loginSchema } = require('../schemas/login.schema');
 
-const loginValidate = async (req, res, next) => {
+const loginValidate = async (req, _res, next) => {
   const { email, password } = req.body;
   const { error } = loginSchema.validate({ email, password });
   if (error) {
@@ -11,7 +11,7 @@ const loginValidate = async (req, res, next) => {
   }
 
   const user = await loginService.getUserByEmail(email);
-  if (!user) {
+  if (!user || user.password !== password) {
     const err = new Error('Invalid fields');
     err.name = 'ValidationError';
     return next(err);

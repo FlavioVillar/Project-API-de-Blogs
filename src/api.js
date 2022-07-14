@@ -7,6 +7,7 @@ const app = express();
 app.use(express.json());
 
 app.use('/login', router.loginRoutes);
+app.use('/user', router.userRoutes);
 app.use(errorHandler);
 
 // É importante exportar a constante `app`,
