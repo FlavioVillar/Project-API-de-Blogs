@@ -1,5 +1,4 @@
 const { User } = require('../database/models');
-// const userSchema = require('../schemas/user.schema');
 const jwtService = require('./jwt.service');
 
 const getUserByEmail = async (email) => {
@@ -21,7 +20,13 @@ const createUser = async ({ displayName, email, password, image }) => {
   return { token };
 };
 
+const getAllUsers = async () => {
+  const users = await User.findAll({ attributes: ['id', 'displayName', 'email', 'image'] });
+  return users;
+};
+
 module.exports = {
   getUserByEmail,
   createUser,
+  getAllUsers,
 };

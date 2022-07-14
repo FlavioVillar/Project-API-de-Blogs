@@ -10,6 +10,19 @@ const createUser = async (req, res) => {
   }
 };
 
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await userService.getAllUsers();
+    const result = users.map((user) => ({
+      id: user.id, displayName: user.displayName, email: user.email, image: user.image,
+    }));
+    return res.status(200).json(result);
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
 module.exports = {
   createUser,
+  getAllUsers,
 };
