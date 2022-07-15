@@ -17,4 +17,15 @@ const postSchema = Joi.object().keys({
   }),
 });
 
-module.exports = postSchema;
+const postSchemaByUser = Joi.object().keys({
+  title: Joi.string().required().messages({
+    'string.empty': messageSchema,
+    'string.required': messageSchema,
+  }),
+  content: Joi.string().required().messages({
+    'string.empty': messageSchema,
+    'string.required': messageSchema,
+  }),
+});
+
+module.exports = { postSchema, postSchemaByUser };

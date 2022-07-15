@@ -1,12 +1,10 @@
-require('dotenv/config');
-const jwt = require('jsonwebtoken');
+const { getUserByToken } = require('../services/jwt.service');
 const postService = require('../services/post.service');
 
 const createPostWithUser = async (req, res) => {
   const { title, content, categoryIds } = req.body;
   const { authorization } = req.headers;
-  const { data } = jwt.verify(authorization, process.env.JWT_SECRET);
-  const UserEmail = data.email;
+  const UserEmail = await getUserByToken(authorization);
   const post = await postService.createPostWithUser({ title, content, categoryIds, UserEmail });
   return res.status(201).json(post.dataValues);
 };
@@ -26,8 +24,20 @@ const getPostById = async (req, res) => {
   return res.status(200).json(post);
 };
 
+const updatePost = async (req, res) => {
+  const { id } = req.params;
+  const { title, content } = req.body;
+  const post = await postService.updatePost(id, { title, content });
+  if (!post) {
+    return res.status(404).json({ message: 'Post does not exist' });
+  }
+
+  return res.status(200).json(post);
+};
+
 module.exports = {
   createPostWithUser,
   getAllPosts,
   getPostById,
+  updatePost,
 };

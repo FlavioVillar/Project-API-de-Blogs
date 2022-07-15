@@ -21,7 +21,14 @@ const validateToken = (token) => {
   }
 };
 
+const getUserByToken = (token) => {
+  const { data } = jwt.verify(token, process.env.JWT_SECRET);
+  const { email } = data;
+  return email;
+};
+
 module.exports = {
   createToken,
   validateToken,
+  getUserByToken,
 };
