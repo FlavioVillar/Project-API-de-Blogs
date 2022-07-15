@@ -7,5 +7,6 @@ const validationPost = require('../middlewares/post.middleware');
 const router = express.Router();
 
 router.post('/', validationToken, validationPost, postController.createPostWithUser);
+router.get('/', validationToken, postController.getAllPosts);
 
 module.exports = router;
