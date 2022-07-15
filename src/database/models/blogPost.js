@@ -20,13 +20,13 @@ const blogPostModel = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.INTEGER,
     },
-    published: {
-      allowNull: false,
-      type: DataTypes.DATE,
-    },
     updated: {
       allowNull: false,
-      type: DataTypes.DATE,
+      type: DataTypes.DATE,      
+    },
+    published: {
+      allowNull: false,
+      type: DataTypes.DATE,    
     }
   }, {
     tableName: 'BlogPosts',

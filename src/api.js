@@ -9,6 +9,7 @@ app.use(express.json());
 app.use('/login', router.loginRoutes);
 app.use('/user', router.userRoutes);
 app.use('/categories', router.categoryRoutes);
+app.use('/post', router.postRoutes);
 app.use(errorHandler);
 
 // É importante exportar a constante `app`,

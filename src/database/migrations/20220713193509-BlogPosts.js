@@ -25,16 +25,16 @@ module.exports = {
           key: 'id'
         }
       },
+      updated: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        // field: 'updated',
+      },
       published: {
         allowNull: false,
         type: Sequelize.DATE,
         // field: 'published',
       },
-      updated: {
-        allowNull: false,
-        type: Sequelize.DATE,
-        // field: 'updated',
-      }
     });
   },
 
