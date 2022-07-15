@@ -29,23 +29,40 @@ const getAllPosts = async () => {
   const posts = await BlogPost.findAll(
   
     {
-    include: [{
-      model: User,
-as: 'user',
-      attributes: ['id', 'displayName', 'email', 'image'],
+      include: [{
+        model: User,
+        as: 'user',
+        attributes: ['id', 'displayName', 'email', 'image'],
       },
         {
-      model: Category,
-as: 'categories',
-      attributes: ['id', 'name'],
-        },
-      ],
+          model: Category,
+          as: 'categories',
+          attributes: ['id', 'name'],
+        }],
     },
-  );
+);
   return posts;
+};
+
+const getPostById = async (id) => {
+  const post = await BlogPost.findOne({
+    where: { id },
+    include: [{
+      model: User,
+      as: 'user',
+      attributes: ['id', 'displayName', 'email', 'image'],
+    },
+      {
+        model: Category,
+        as: 'categories',
+        attributes: ['id', 'name'],
+      }],
+  });
+  return post;
 };
 
 module.exports = {
   createPostWithUser,
   getAllPosts,
+  getPostById,
 };
