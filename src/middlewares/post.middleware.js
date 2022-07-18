@@ -20,7 +20,7 @@ const validationPost = async (req, res, next) => {
   next();
 };
 
-const validationPostByUser = async (req, res, next) => {
+const validationUserForPut = async (req, res, next) => {
   const { error } = postSchemaByUser.validate(req.body);
   if (error) {
     const { message } = error;
@@ -31,10 +31,28 @@ const validationPostByUser = async (req, res, next) => {
   const UserEmail = await getUserByToken(authorization);
   const getUser = await User.findOne({ where: { email: UserEmail } });
   const getPost = await BlogPost.findByPk(id);
+  if (!getPost) {
+    return res.status(404).json({ message: 'Post does not exist' });
+  }
   if (getUser.id !== getPost.userId) {
     return res.status(401).json({ message: 'Unauthorized user' });
   }
   next();
 };
 
-module.exports = { validationPost, validationPostByUser };
+const validationUserForDelete = async (req, res, next) => {
+  const { id } = req.params;
+  const { authorization } = req.headers;
+  const UserEmail = await getUserByToken(authorization);
+  const getUser = await User.findOne({ where: { email: UserEmail } });
+  const getPost = await BlogPost.findByPk(id);
+  if (!getPost) {
+    return res.status(404).json({ message: 'Post does not exist' });
+  }
+  if (getUser.id !== getPost.userId) {
+    return res.status(401).json({ message: 'Unauthorized user' });
+  }
+  next();
+};
+
+module.exports = { validationPost, validationUserForPut, validationUserForDelete };

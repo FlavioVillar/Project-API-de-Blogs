@@ -18,7 +18,7 @@ services:
       - 3000:3000
     environment:
       MYSQL_USER: root
-      MYSQL_PASSWORD: password
+      MYSQL_PASSWORD: root
       HOSTNAME: db
       JWT_SECRET: secretJWT
   db:
@@ -30,7 +30,8 @@ services:
       - 3306:3306
       - 33060:33060
     environment:
-      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: root
 
 networks:
   default:
