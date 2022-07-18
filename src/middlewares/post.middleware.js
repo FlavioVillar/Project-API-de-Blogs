@@ -55,4 +55,8 @@ const validationUserForDelete = async (req, res, next) => {
   next();
 };
 
-module.exports = { validationPost, validationUserForPut, validationUserForDelete };
+module.exports = {
+  validationPost,
+  validationUserForPut,
+  validationUserForDelete,
+};

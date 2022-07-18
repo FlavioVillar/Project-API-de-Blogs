@@ -4,6 +4,19 @@ const config = require('../database/config/config');
 
 const sequelize = new Sequelize(config.development);
 
+const getPostObject = {
+  include: [{
+    model: User,
+    as: 'user',
+    attributes: ['id', 'displayName', 'email', 'image'],
+  },
+  {
+    model: Category,
+    as: 'categories',
+    attributes: ['id', 'name'],
+  }],
+};    
+
 const createPostWithUser = async ({ title, content, categoryIds, UserEmail }) => {
   const getUser = await User.findOne({ where: { email: UserEmail } });
   const t = await sequelize.transaction();
@@ -26,62 +39,28 @@ const createPostWithUser = async ({ title, content, categoryIds, UserEmail }) =>
 };
 
 const getAllPosts = async () => {
-  const posts = await BlogPost.findAll(
-  
-    {
-      include: [{
-        model: User,
-        as: 'user',
-        attributes: ['id', 'displayName', 'email', 'image'],
-      },
-        {
-          model: Category,
-          as: 'categories',
-          attributes: ['id', 'name'],
-        }],
-    },
-);
+  const posts = await BlogPost.findAll(getPostObject);
   return posts;
 };
 
 const getPostById = async (id) => {
-  const post = await BlogPost.findOne({
-    where: { id },
-    include: [{
-      model: User,
-      as: 'user',
-      attributes: ['id', 'displayName', 'email', 'image'],
-    },
-      {
-        model: Category,
-        as: 'categories',
-        attributes: ['id', 'name'],
-      }],
-  });
+  const post = await BlogPost.findOne({ where: { id }, ...getPostObject });
   return post;
 };
 
 const updatePost = async (id, { title, content }) => {
   const post = await BlogPost.findByPk(id);
-  if (!post) {
-    return { message: 'Post does not exist' };
-  }
+
   await post.update({ title, content });
+
   const result = await getPostById(id);
   return result;
 };
 
 const deletePost = async (postId) => {
-  const test = await PostCategory.destroy({ where: { postId } });
-  console.log('test', test);
-  
-  const post = await BlogPost.destroy({ where: { id: postId } });
-  console.log('post', post);
+    await PostCategory.destroy({ where: { postId } });
 
-  if (test === 0 && post === 0) {
-    return false;
-  }
-  return 'true';
+    await BlogPost.destroy({ where: { id: postId } });
 };
 
 module.exports = {
