@@ -1,20 +1,15 @@
 const Sequelize = require('sequelize');
+const { Op } = require('sequelize');
 const { BlogPost, User, Category, PostCategory } = require('../database/models');
 const config = require('../database/config/config');
 
 const sequelize = new Sequelize(config.development);
 
 const getPostObject = {
-  include: [{
-    model: User,
-    as: 'user',
-    attributes: ['id', 'displayName', 'email', 'image'],
-  },
-  {
-    model: Category,
-    as: 'categories',
-    attributes: ['id', 'name'],
-  }],
+  include: [
+    { model: User, as: 'user', attributes: ['id', 'displayName', 'email', 'image'] },
+    { model: Category, as: 'categories', attributes: ['id', 'name'] },
+  ],
 };    
 
 const createPostWithUser = async ({ title, content, categoryIds, UserEmail }) => {
@@ -63,10 +58,25 @@ const deletePost = async (postId) => {
     await BlogPost.destroy({ where: { id: postId } });
 };
 
+const searchPost = async (searchText) => {
+  const posts = await BlogPost.findAll({
+    where: {
+    // https://sequelize.org/docs/v6/core-concepts/model-querying-basics/
+    [Op.or]: [
+      { title: { [Op.like]: `%${searchText}%` } },
+      { content: { [Op.like]: `%${searchText}%` } },
+    ],
+    },
+    ...getPostObject,
+});
+  return posts;
+};
+
 module.exports = {
   createPostWithUser,
   getAllPosts,
   getPostById,
   updatePost,
   deletePost,
+  searchPost,
 };

@@ -51,11 +51,21 @@ const updatePost = async (req, res) => {
 const deletePost = async (req, res, _next) => {
   const { id } = req.params;
   try {
-  await postService.deletePost(id);
-
+    await postService.deletePost(id);
+    
     return res.status(204).end();
   } catch (error) {
     return res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+const searchPost = async (req, res) => {
+  const { q } = req.query;
+  try {
+  const posts = await postService.searchPost(q);
+    return res.status(200).json(posts);
+  } catch (error) {
+    return res.status(500).json(error);
   }
 };
 
@@ -65,4 +75,5 @@ module.exports = {
   getPostById,
   updatePost,
   deletePost,
+  searchPost,
 };

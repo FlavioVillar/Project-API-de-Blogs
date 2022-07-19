@@ -23,7 +23,6 @@ const postCategoryModel = (sequelize, DataTypes) => {
   }, {
     tableName: 'PostCategories',
     timestamps: false,
-    // underscored: false,
   });
 
   PostCategory.associate = (models) => {

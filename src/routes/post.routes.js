@@ -11,6 +11,7 @@ const {
 const router = express.Router();
 
 router.post('/', validationToken, validationPost, postController.createPostWithUser);
+router.get('/search', validationToken, postController.searchPost);
 router.get('/', validationToken, postController.getAllPosts);
 router.get('/:id', validationToken, postController.getPostById);
 router.put('/:id', validationToken, validationUserForPut, postController.updatePost);
