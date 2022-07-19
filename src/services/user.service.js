@@ -1,4 +1,4 @@
-const { User } = require('../database/models');
+const { BlogPost, User, PostCategory } = require('../database/models');
 const jwtService = require('./jwt.service');
 
 const getUserByEmail = async (email) => {
@@ -38,9 +38,24 @@ const getUserById = async (id) => {
   return result;
 };
 
+const deleteUser = async (id) => {
+  const getPost = await BlogPost.findAll({ where: { userId: id } });
+  const postId = getPost.map((post) => post.id);
+  
+  await postId.forEach((item) => {
+    PostCategory.destroy({ where: { postId: item } });
+  });
+  await postId.forEach((item) => {
+    BlogPost.destroy({ where: { userId: item } });
+  });
+  const getUser = await User.findOne({ where: { id } });
+  await getUser.destroy({ where: { id } });
+};
+
 module.exports = {
   getUserByEmail,
   createUser,
   getAllUsers,
   getUserById,
+  deleteUser,
 };

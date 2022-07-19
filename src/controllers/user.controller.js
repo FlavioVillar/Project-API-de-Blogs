@@ -1,3 +1,5 @@
+const { User } = require('../database/models');
+const { getUserByToken } = require('../services/jwt.service');
 const userService = require('../services/user.service');
 
 const createUser = async (req, res) => {
@@ -36,8 +38,24 @@ const getUserById = async (req, res) => {
   }
 };
 
+const deleteUser = async (req, res) => {
+  const { authorization } = req.headers;
+  const UserEmail = await getUserByToken(authorization);
+  const getUser = await User.findOne({ where: { email: UserEmail } });
+  if (!getUser) {
+    return res.status(404).json({ message: 'User does not exist' });
+  }
+  try {
+    await userService.deleteUser(getUser.id);
+    return res.status(204).end();
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
 module.exports = {
   createUser,
   getAllUsers,
   getUserById,
+  deleteUser,
 };
