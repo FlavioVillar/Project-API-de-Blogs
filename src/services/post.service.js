@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
+const { TIMESTAMP } = require('mysql2/lib/constants/types');
 const { BlogPost, User, Category, PostCategory } = require('../database/models');
 const config = require('../database/config/config');
 
@@ -20,8 +21,8 @@ const createPostWithUser = async ({ title, content, categoryIds, UserEmail }) =>
       title,
       content,
       userId: getUser.id,
-      published: new Date('2011-08-01T19:58:00.000Z'),
-      updated: new Date('2011-08-01T19:58:00.000Z'),
+      published: TIMESTAMP,
+      updated: TIMESTAMP,
     }, { transaction: t });
     await post.setUser(getUser, { transaction: t });
     await post.setCategories(categoryIds, { transaction: t });

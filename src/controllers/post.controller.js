@@ -13,7 +13,7 @@ const createPostWithUser = async (req, res) => {
   }
 };
 
-const getAllPosts = async (req, res) => {
+const getAllPosts = async (_req, res) => {
   try {
   const posts = await postService.getAllPosts();
     return res.status(200).json(posts);
@@ -32,7 +32,7 @@ const getPostById = async (req, res) => {
 
     return res.status(200).json(post);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json(error);
   }
 };
 
@@ -48,14 +48,14 @@ const updatePost = async (req, res) => {
   }
 };
 
-const deletePost = async (req, res, _next) => {
+const deletePost = async (req, res) => {
   const { id } = req.params;
   try {
     await postService.deletePost(id);
     
     return res.status(204).end();
   } catch (error) {
-    return res.status(500).json({ message: 'Internal server error' });
+    return res.status(500).json(error);
   }
 };
 

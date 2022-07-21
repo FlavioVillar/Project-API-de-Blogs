@@ -10,7 +10,7 @@ const validationToken = async (req, res, next) => {
   const isValidToken = jwtService.validateToken(authorization);
   // “instanceof” pode ser lida como “é um”.
   if (isValidToken instanceof Error) {
-    return res.status(401).json({ message: 'Expired or invalid token' });
+    return res.status(401).json({ message: isValidToken.message });
   }
 
   next();

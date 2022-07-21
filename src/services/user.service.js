@@ -6,17 +6,15 @@ const getUserByEmail = async (email) => {
   return user;
 };
 
-const createUser = async ({ displayName, email, password, image }) => {
+const createUser = async (displayName, email, password, image) => {
   const emailExists = await User.findOne({ where: { email } });
 
   if (emailExists) {
-    const err = new Error('User already registered');
-    err.name = 'ConflictError';
-    throw err;
+    return false;
   }
 
   const user = await User.create({ displayName, email, password, image });
-  const token = await jwtService.createToken(user);
+  const token = jwtService.createToken(user);
   return { token };
 };
 
@@ -25,17 +23,12 @@ const getAllUsers = async () => {
   return users;
 };
 
-const getUserById = async (id) => {
-  const user = await User.findOne({ where: { id } });
-  if (!user) {
-    const err = new Error('User does not exist');
-    err.name = 'NotFoundError';
-    return err;
-  }
-  const result = {
-    id: user.id, displayName: user.displayName, email: user.email, image: user.image,
-  };
-  return result;
+const getUserById = async (userId) => {
+  const user = await User.findOne(
+    { where: { id: userId }, attributes: ['id', 'displayName', 'email', 'image'] },
+  );
+  if (!user) return false;
+  return user;
 };
 
 const deleteUser = async (id) => {
