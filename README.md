@@ -24,8 +24,32 @@ Projeto desenvolvido por estudante durante o curso de desenvolvimento back-end d
 
 # Orientações
 
-1. Abra uma janela de terminal.
-2. Navegue até o local onde deseja salvar o projeto clonado.
-3. Execute o comando `git clone git@github.com:FlavioVillar/Project-blogs-API.git`
-4. Navegue até a pasta que você acabou de clonar e execute o comando npm install, para instalar as dependências do aplicativo.
-5. Os arquivos estão na sua máquina. Aproveite a aplicação!
+- Instale as aplicações na ***pasta raiz*** com:  `npm install` 
+
+- Crie um arquivo .env (conforme exemplo em `.env.example`)
+
+- Execute o docker compose com o comando: `docker-compose up -d`
+
+- Execute o comando para entrar no terminal do docker: `docker exec -it blogs_api bash`
+
+- Execute o comando para criar o banco e gera as tabelas: `npm run prestart`
+
+- Execute o comando para inserir dados/Popular a tabela: `npm run seed`
+
+- Execute o comando para usar a aplicação: `npm start`
+
+
+# Usando a aplicação
+
+- Crie um novo usuário através do endpoint POST, na URL `/user`.
+- O corpo da requisição deverá seguir o formato abaixo:
+```json
+  {
+    "displayName": "name_exemple",
+    "email": "email@email.com",
+    "password": "123456",
+    "image": "Link da imagem"
+  }
+  ```
+  - será gerado um token para a criação e edição de posts no blog.
+
